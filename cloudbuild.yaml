@@ -1,19 +1,13 @@
-availableSecrets:
-  secretManager:
-    - versionName: projects/$_AR_PROJECT_ID/secrets/DEBUG/versions/latest
-      env: DEBUG
-
 steps:
   - name: gcr.io/cloud-builders/docker
+    env:
+      - 'DEBUG=$_DEBUG'
     entrypoint: bash
-    secretEnv:
-      - DEBUG
     args:
       - -c
       - |
         docker build \
           --target production \
-          --build-arg DEBUG=$$DEBUG \
           -t $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA .
   - name: gcr.io/cloud-builders/docker
     args:
