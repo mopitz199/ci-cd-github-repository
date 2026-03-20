@@ -1,7 +1,7 @@
 steps:
   - name: gcr.io/cloud-builders/docker
     env:
-      - 'DEBUG=$_DEBUG'
+      - 'DEBUG=False'
     entrypoint: bash
     args:
       - -c
