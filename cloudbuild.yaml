@@ -21,6 +21,8 @@ steps:
       - $_SERVICE_NAME
       - '--image'
       - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA'
+      - '--service-account'
+      - ci-cd-service-account@ci-cd-project-490723.iam.gserviceaccount.com
       - '--allow-unauthenticated'
       - '--region'
       - $_DEPLOY_REGION
