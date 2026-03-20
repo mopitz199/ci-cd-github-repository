@@ -26,7 +26,9 @@ env = environ.Env(DEBUG=(bool, True))
 SECRET_KEY = 'django-insecure--yg7luomomw)jrbt_y))3njou2g6@#fwnx)u2*!6-59mz4i2pa'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG').lower() == 'true'
+print("maximiliano DEBUG:", env('DEBUG'))
+
+DEBUG = env('DEBUG')
 
 if not DEBUG:
     ALLOWED_HOSTS = ['*']
