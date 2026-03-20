@@ -2,6 +2,8 @@ steps:
   - name: gcr.io/cloud-builders/docker
     args:
       - build
+      - '--target'
+      - 'production'
       - '-t'
       - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA'
       - .
@@ -21,6 +23,8 @@ steps:
       - $_DEPLOY_REGION
       - '--platform'
       - $_PLATFORM
+      - '--update-secrets'
+      - 'DEBUG=DEBUG:latest'
     entrypoint: gcloud
 timeout: 1200s
 images:
