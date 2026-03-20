@@ -20,4 +20,4 @@ FROM base AS production
 ENV DEBUG=$DEBUG
 RUN python manage.py collectstatic --noinput
 # The PORT is set by Cloud Run, so we use it in the command to bind the server to the correct port.
-CMD ["sh", "-c", "gunicorn mezivus.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --threads 4"]
+CMD ["sh", "-c", "gunicorn mysite.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --threads 4"]
