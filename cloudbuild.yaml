@@ -6,11 +6,13 @@ availableSecrets:
 steps:
   - name: gcr.io/cloud-builders/docker
     entrypoint: bash
+    secretEnv:
+      - DEBUG
     args:
       - -c
       - |
         docker build \
-          -- target production \
+          --target production \
           --build-arg DEBUG=$$DEBUG \
           -t $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA .
   - name: gcr.io/cloud-builders/docker
