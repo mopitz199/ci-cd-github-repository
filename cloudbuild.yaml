@@ -28,6 +28,8 @@ steps:
       - $_PLATFORM
       - '--update-env-vars'
       - 'DEBUG=$_DEBUG'
+      - '--update-secrets'
+      - 'DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest'
     entrypoint: gcloud
 timeout: 1200s
 images:
