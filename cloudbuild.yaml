@@ -13,6 +13,32 @@ steps:
       - push
       - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA'
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+      - -ceu
+      - |
+        if gcloud run jobs describe "$_MIGRATE_JOB_NAME" --region "$_DEPLOY_REGION" >/dev/null 2>&1; then
+          echo "Job exists. Updating..."
+          gcloud run jobs update "$_MIGRATE_JOB_NAME" \
+            --image "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA" \
+            --region "$_DEPLOY_REGION" \
+            --set-cloudsql-instances "ci-cd-project-490723:southamerica-west1:ci-cd-postgres" \
+            --set-env-vars "DEBUG=$_DEBUG" \
+            --set-secrets "DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest" \
+            --command python \
+            --args manage.py,migrate,--noinput
+        else
+          echo "Job does not exist. Creating..."
+          gcloud run jobs create "$_MIGRATE_JOB_NAME" \
+            --image "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA" \
+            --region "$_DEPLOY_REGION" \
+            --set-cloudsql-instances "ci-cd-project-490723:southamerica-west1:ci-cd-postgres" \
+            --set-env-vars "DEBUG=$_DEBUG" \
+            --set-secrets "DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest" \
+            --command python \
+            --args manage.py,migrate,--noinput
+        fi
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     args:
       - run
       - deploy
