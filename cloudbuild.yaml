@@ -25,7 +25,7 @@ steps:
             --service-account "$_SERVICE_ACCOUNT" \
             --set-cloudsql-instances "$_CLOUD_SQL_INSTANCE" \
             --set-env-vars "DEBUG=$_DEBUG" \
-            --set-secrets "DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest" \
+            --set-secrets "DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest,DATABASE_URL=DATABASE_URL:latest" \
             --command python \
             --args manage.py,migrate,--noinput
         else
@@ -36,7 +36,7 @@ steps:
             --service-account "$_SERVICE_ACCOUNT" \
             --set-cloudsql-instances "$_CLOUD_SQL_INSTANCE" \
             --set-env-vars "DEBUG=$_DEBUG" \
-            --set-secrets "DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest" \
+            --set-secrets "DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest,DATABASE_URL=DATABASE_URL:latest" \
             --command python \
             --args manage.py,migrate,--noinput
         fi
@@ -59,7 +59,7 @@ steps:
       - '--update-env-vars'
       - 'DEBUG=$_DEBUG'
       - '--update-secrets'
-      - 'DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest'
+      - 'DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest,DATABASE_URL=DATABASE_URL:latest'
     entrypoint: gcloud
 timeout: 1200s
 images:
