@@ -86,10 +86,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': env.db("DATABASE_URL", default="postgresql://ci-cd-db-user:CI-CD-password-1@34.176.46.167:5432/ci-cd-db")
 }
 
 
