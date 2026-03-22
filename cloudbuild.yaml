@@ -33,6 +33,7 @@ steps:
           gcloud run jobs create "$_MIGRATE_JOB_NAME" \
             --image "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA" \
             --region "$_DEPLOY_REGION" \
+            --add-cloudsql-instances "ci-cd-project-490723:southamerica-west1:ci-cd-postgres" \
             --service-account "ci-cd-service-account@ci-cd-project-490723.iam.gserviceaccount.com" \
             --set-cloudsql-instances "ci-cd-project-490723:southamerica-west1:ci-cd-postgres" \
             --set-env-vars "DEBUG=$_DEBUG" \
