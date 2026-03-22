@@ -1,14 +1,12 @@
 steps:
   - name: gcr.io/cloud-builders/docker
-    env:
-      - 'DEBUG=False'
     entrypoint: bash
     args:
       - -c
       - |
         docker build \
           --target production \
-          --build-arg DEBUG="$$DEBUG" \
+          --build-arg DEBUG="$_DEBUG" \
           -t $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA .
   - name: gcr.io/cloud-builders/docker
     args:
@@ -28,8 +26,8 @@ steps:
       - $_DEPLOY_REGION
       - '--platform'
       - $_PLATFORM
-      - '--update-secrets'
-      - 'DEBUG=DEBUG:latest'
+      - '--update-env-vars'
+      - 'DEBUG=$_DEBUG'
     entrypoint: gcloud
 timeout: 1200s
 images:
