@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-DB_URL = env.db("DATABASE_URL", default="postgresql://ci-cd-db-user:CI-CD-password-1@34.176.46.167:5432/ci-cd-db")
+DB_URL = env.db("DATABASE_URL", default="postgresql://ci-cd-db-user:CI-CD-password-1@/ci-cd-db?host=/cloudsql/ci-cd-project-490723:southamerica-west1:ci-cd-postgres")
 
 print("maximiliano DATABASE_URL:", DB_URL)
 
