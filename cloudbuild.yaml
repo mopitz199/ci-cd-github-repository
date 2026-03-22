@@ -22,6 +22,7 @@ steps:
           gcloud run jobs update "$_MIGRATE_JOB_NAME" \
             --image "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA" \
             --region "$_DEPLOY_REGION" \
+            --service-account "ci-cd-service-account@ci-cd-project-490723.iam.gserviceaccount.com" \
             --set-cloudsql-instances "ci-cd-project-490723:southamerica-west1:ci-cd-postgres" \
             --set-env-vars "DEBUG=$_DEBUG" \
             --set-secrets "DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest" \
@@ -32,6 +33,7 @@ steps:
           gcloud run jobs create "$_MIGRATE_JOB_NAME" \
             --image "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA" \
             --region "$_DEPLOY_REGION" \
+            --service-account "ci-cd-service-account@ci-cd-project-490723.iam.gserviceaccount.com" \
             --set-cloudsql-instances "ci-cd-project-490723:southamerica-west1:ci-cd-postgres" \
             --set-env-vars "DEBUG=$_DEBUG" \
             --set-secrets "DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest" \
