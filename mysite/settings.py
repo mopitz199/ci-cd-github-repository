@@ -26,8 +26,6 @@ env = environ.Env(DEBUG=(bool, True))
 SECRET_KEY = env('DJANGO_SECRET_KEY', default='django-insecure--yg7luomomw)jrbt_y))3njou2g6@#fwnx)u2*!6-59mz4i2pa')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-print("maximiliano DEBUG:", env('DEBUG'))
-
 DEBUG = env('DEBUG')
 
 if not DEBUG:
@@ -86,8 +84,6 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DB_URL = env.db("DATABASE_URL", default="")
-
-print("maximiliano DATABASE_URL:", DB_URL)
 
 DATABASES = {
     'default': DB_URL
