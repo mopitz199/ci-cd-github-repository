@@ -29,7 +29,7 @@ SECRET_KEY = env('DJANGO_SECRET_KEY', default=get_random_secret_key())
 DEBUG = env('DEBUG')
 
 if not DEBUG:
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 else:

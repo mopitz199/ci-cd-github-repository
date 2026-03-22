@@ -57,7 +57,7 @@ steps:
       - '--add-cloudsql-instances'
       - '$_CLOUD_SQL_INSTANCE'
       - '--update-env-vars'
-      - 'DEBUG=$_DEBUG'
+      - 'DEBUG=$_DEBUG,ALLOWED_HOSTS=$_ALLOWED_HOSTS'
       - '--update-secrets'
       - 'DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest,DATABASE_URL=DATABASE_URL:latest'
     entrypoint: gcloud
