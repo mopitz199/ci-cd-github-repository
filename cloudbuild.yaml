@@ -22,8 +22,8 @@ steps:
           gcloud run jobs update "$_MIGRATE_JOB_NAME" \
             --image "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA" \
             --region "$_DEPLOY_REGION" \
-            --service-account "ci-cd-service-account@ci-cd-project-490723.iam.gserviceaccount.com" \
-            --set-cloudsql-instances "ci-cd-project-490723:southamerica-west1:ci-cd-postgres" \
+            --service-account "$_SERVICE_ACCOUNT" \
+            --set-cloudsql-instances "$_CLOUD_SQL_INSTANCE" \
             --set-env-vars "DEBUG=$_DEBUG" \
             --set-secrets "DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest" \
             --command python \
@@ -33,9 +33,8 @@ steps:
           gcloud run jobs create "$_MIGRATE_JOB_NAME" \
             --image "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA" \
             --region "$_DEPLOY_REGION" \
-            --add-cloudsql-instances "ci-cd-project-490723:southamerica-west1:ci-cd-postgres" \
-            --service-account "ci-cd-service-account@ci-cd-project-490723.iam.gserviceaccount.com" \
-            --set-cloudsql-instances "ci-cd-project-490723:southamerica-west1:ci-cd-postgres" \
+            --service-account "$_SERVICE_ACCOUNT" \
+            --set-cloudsql-instances "$_CLOUD_SQL_INSTANCE" \
             --set-env-vars "DEBUG=$_DEBUG" \
             --set-secrets "DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest" \
             --command python \
@@ -49,14 +48,14 @@ steps:
       - '--image'
       - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA'
       - '--service-account'
-      - ci-cd-service-account@ci-cd-project-490723.iam.gserviceaccount.com
+      - "$_SERVICE_ACCOUNT"
       - '--allow-unauthenticated'
       - '--region'
       - $_DEPLOY_REGION
       - '--platform'
       - $_PLATFORM
       - '--add-cloudsql-instances'
-      - 'ci-cd-project-490723:southamerica-west1:ci-cd-postgres'
+      - '$_CLOUD_SQL_INSTANCE'
       - '--update-env-vars'
       - 'DEBUG=$_DEBUG'
       - '--update-secrets'
