@@ -26,6 +26,8 @@ steps:
       - $_DEPLOY_REGION
       - '--platform'
       - $_PLATFORM
+      - '--add-cloudsql-instances'
+      - 'ci-cd-project-490723:southamerica-west1:ci-cd-postgres'
       - '--update-env-vars'
       - 'DEBUG=$_DEBUG'
       - '--update-secrets'
