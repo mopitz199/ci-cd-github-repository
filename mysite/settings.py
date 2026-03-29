@@ -138,7 +138,7 @@ if DEBUG:
         }
     }
 else:
-    MEDIA_URL = "https://storage.googleapis.com/ci-cd-media-bucket/production/"
+    MEDIA_URL = "https://storage.googleapis.com/ci-cd-media-bucket/"
     STORAGES = {
         "default": {
             "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
