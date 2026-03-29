@@ -8,7 +8,7 @@ from .models import UserProfile
 class UserProfileAdmin(admin.ModelAdmin):
 	list_display = ("name", "age", "profile_image_preview")
 	readonly_fields = ("profile_image_preview",)
-	fields = ("name", "age", "profile_image", "profile_image_preview")
+	fields = ("name", "age", "profile_image")
 
 	@admin.display(description="Image")
 	def profile_image_preview(self, obj):
