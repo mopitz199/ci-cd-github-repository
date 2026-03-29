@@ -144,6 +144,7 @@ else:
             "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
             "OPTIONS": {
                 "bucket_name": "ci-cd-media-bucket",
+                "querystring_auth": False,
             },
         },
         "staticfiles": {
