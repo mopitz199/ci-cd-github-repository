@@ -6,3 +6,6 @@ django-environ>=0.11.2 # Library for managing environment variables in Django
 whitenoise>=6.12.0 # Middleware for serving static files in production
 Django==6.0.3
 sqlparse==0.5.5
+django-storages>=1.14.6 # Library for handling file storage in Django, with support for Google Cloud Storage
+google-cloud-storage>=3.10.1 # Google Cloud Storage client library, required for django-storages integration
+Pillow>=12.1.1 # Python Imaging Library, required for handling image uploads

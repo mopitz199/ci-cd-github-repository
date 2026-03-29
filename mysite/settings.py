@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages', # Required for django-storages
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -124,12 +126,32 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-if not DEBUG:
+if DEBUG:
+    MEDIA_URL = "/media/"
+    MEDIA_ROOT = BASE_DIR / "media"
     STORAGES = {
-        "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
         },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        }
     }
+else:
+    MEDIA_URL = "https://storage.googleapis.com/ci-cd-media-bucket/production/"
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+            "OPTIONS": {
+                "bucket_name": "ci-cd-media-bucket",
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",    
+        }
+    }
+
+if not DEBUG:
     WHITENOISE_MAX_AGE = 31536000 # Cache static files for 1 year
     STATIC_ROOT = BASE_DIR / "staticfiles"
 
