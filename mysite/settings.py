@@ -154,7 +154,6 @@ if DEBUG:
         }
     }
 else:
-    MEDIA_URL = "https://storage.googleapis.com/ci-cd-media-bucket/"
     STORAGES = {
         "default": {
             "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
@@ -169,7 +168,6 @@ else:
             "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
             "OPTIONS": {
                 "bucket_name": "ci-cd-media-public-bucket",
-                # "default_acl": "publicRead",
                 "querystring_auth": False,
                 "location": "media/public",
             },
@@ -179,7 +177,6 @@ else:
             "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
             "OPTIONS": {
                 "bucket_name": "ci-cd-media-private-bucket",
-                # "default_acl": "private",
                 "querystring_auth": True,
                 "iam_sign_blob": True,
                 "location": "media/private",
