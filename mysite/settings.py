@@ -143,8 +143,29 @@ else:
         "default": {
             "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
             "OPTIONS": {
-                "bucket_name": "ci-cd-media-bucket",
+                "bucket_name": "ci-cd-media-public-bucket",
                 "querystring_auth": False,
+                "location": "media/public/default",
+            },
+        },
+        # Archivos públicos
+        "public": {
+            "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+            "OPTIONS": {
+                "bucket_name": "ci-cd-media-public-bucket",
+                # "default_acl": "publicRead",
+                "querystring_auth": False,
+                "location": "media/public",
+            },
+        },
+        # Archivos privados explícitos (opcional si ya usas default)
+        "private": {
+            "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
+            "OPTIONS": {
+                "bucket_name": "ci-cd-media-private-bucket",
+                # "default_acl": "private",
+                "querystring_auth": True,
+                "location": "media/private",
             },
         },
         "staticfiles": {
