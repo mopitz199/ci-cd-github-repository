@@ -181,6 +181,7 @@ else:
                 "bucket_name": "ci-cd-media-private-bucket",
                 # "default_acl": "private",
                 "querystring_auth": True,
+                "iam_sign_blob": True,
                 "location": "media/private",
             },
         },
