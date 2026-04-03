@@ -133,6 +133,22 @@ if DEBUG:
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
         },
+        # Archivos públicos
+        "public": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {
+                "location": MEDIA_ROOT / "public",
+                "base_url": f"{MEDIA_URL}public/",
+            },
+        },
+        # Archivos privados explícitos (opcional si ya usas default)
+        "private": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {
+                "location": MEDIA_ROOT / "private",
+                "base_url": f"{MEDIA_URL}private/",
+            },
+        },
         "staticfiles": {
             "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         }
@@ -172,13 +188,6 @@ else:
             "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",    
         }
     }
-
-
-def get_public_storage():
-    return STORAGES.get("public", STORAGES.get("default"))
-
-def get_private_storage():
-    return STORAGES.get("private", STORAGES.get("default"))
 
 if not DEBUG:
     WHITENOISE_MAX_AGE = 31536000 # Cache static files for 1 year
