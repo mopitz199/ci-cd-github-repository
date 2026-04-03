@@ -173,6 +173,13 @@ else:
         }
     }
 
+
+def get_public_storage():
+    return STORAGES.get("public", STORAGES.get("default"))
+
+def get_private_storage():
+    return STORAGES.get("private", STORAGES.get("default"))
+
 if not DEBUG:
     WHITENOISE_MAX_AGE = 31536000 # Cache static files for 1 year
     STATIC_ROOT = BASE_DIR / "staticfiles"
