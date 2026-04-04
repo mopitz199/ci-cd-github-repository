@@ -19,9 +19,11 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
+from opentelemetry import trace
 import logging
 
 logger = logging.getLogger(__name__)
+tracer = trace.get_tracer(__name__)
 
 
 def trigger_error(request):
@@ -33,10 +35,17 @@ def trigger_log(request):
     return HttpResponse("Log emitted")
 
 
+def trigger_span(request):
+    with tracer.start_as_current_span("test.span") as span:
+        span.add_event("test_span_event", attributes={"event": "test_span_event", "user": "anonymous"})
+    return HttpResponse("Span event emitted")
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('debug/error/', trigger_error),
     path('debug/log/', trigger_log),
+    path('debug/span/', trigger_span),
 ]
 
 if settings.DEBUG:
