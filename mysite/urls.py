@@ -18,9 +18,25 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import HttpResponse
+import logging
+
+logger = logging.getLogger(__name__)
+
+
+def trigger_error(request):
+    raise Exception("Test error for OneUptime monitoring")
+
+
+def trigger_log(request):
+    logger.info("test_log_event", extra={"event": "test_log_event", "user": "anonymous"})
+    return HttpResponse("Log emitted")
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('debug/error/', trigger_error),
+    path('debug/log/', trigger_log),
 ]
 
 if settings.DEBUG:
