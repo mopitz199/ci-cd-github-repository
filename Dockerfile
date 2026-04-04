@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
+RUN opentelemetry-bootstrap -a install
 
 COPY . .
 
@@ -20,4 +21,4 @@ FROM base AS production
 ENV DEBUG=$DEBUG
 RUN python manage.py collectstatic --noinput
 # The PORT is set by Cloud Run, so we use it in the command to bind the server to the correct port.
-CMD ["sh", "-c", "gunicorn mysite.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --threads 4"]
+CMD ["sh", "-c", "opentelemetry-instrument gunicorn mysite.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --threads 4"]

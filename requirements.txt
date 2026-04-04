@@ -9,3 +9,9 @@ sqlparse==0.5.5
 django-storages>=1.14.6 # Library for handling file storage in Django, with support for Google Cloud Storage
 google-cloud-storage>=3.10.1 # Google Cloud Storage client library, required for django-storages integration
 Pillow>=12.1.1 # Python Imaging Library, required for handling image uploads
+opentelemetry-distro==0.61b0
+opentelemetry-exporter-otlp==1.40.0
+opentelemetry-instrumentation-django==0.61b0
+opentelemetry-instrumentation-logging==0.61b0
+opentelemetry-instrumentation-requests==0.61b0
+opentelemetry-instrumentation-psycopg==0.61b0
