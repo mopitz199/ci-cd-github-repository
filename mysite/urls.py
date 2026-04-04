@@ -19,11 +19,17 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.http import HttpResponse
-from opentelemetry import trace
+from opentelemetry import trace, metrics
 import logging
 
 logger = logging.getLogger(__name__)
 tracer = trace.get_tracer(__name__)
+meter = metrics.get_meter(__name__)
+hit_counter = meter.create_counter(
+    "debug.hit_counter",
+    unit="1",
+    description="Number of times /debug/counter/ was hit",
+)
 
 
 def trigger_error(request):
@@ -41,11 +47,17 @@ def trigger_span(request):
     return HttpResponse("Span event emitted")
 
 
+def trigger_counter(request):
+    hit_counter.add(1, {"endpoint": "debug.counter", "env": "production"})
+    return HttpResponse("Counter incremented")
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('debug/error/', trigger_error),
     path('debug/log/', trigger_log),
     path('debug/span/', trigger_span),
+    path('debug/counter/', trigger_counter),
 ]
 
 if settings.DEBUG:
