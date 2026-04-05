@@ -45,12 +45,8 @@ steps:
     args:
       - -c
       - |
-        python3 -c '
-        import os, re
-        content = open("service.yaml").read()
-        result = re.sub(r"\$\{?([A-Za-z_][A-Za-z0-9_]*)\}?", lambda m: os.environ.get(m.group(1), m.group(0)), content)
-        open("rendered-service.yaml", "w").write(result)
-        '
+        apt-get install -y gettext-base
+        envsubst < service.yaml > rendered-service.yaml
         cat rendered-service.yaml
         gcloud run services replace rendered-service.yaml --region "$_DEPLOY_REGION" --platform "$_PLATFORM"
 timeout: 1200s
