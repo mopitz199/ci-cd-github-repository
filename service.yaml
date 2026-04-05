@@ -56,7 +56,7 @@ spec:
               port: 8080
             periodSeconds: 10
             timeoutSeconds: 5
-            failureThreshold: 12
+            failureThreshold: 24
 
         - name: otel-collector
           image: $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/otel-collector:$_OTEL_COLLECTOR_VERSION
