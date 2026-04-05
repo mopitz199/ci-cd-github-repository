@@ -42,6 +42,20 @@ steps:
         fi
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: bash
+    env:
+      - '_AR_HOSTNAME=$_AR_HOSTNAME'
+      - '_AR_PROJECT_ID=$_AR_PROJECT_ID'
+      - '_AR_REPOSITORY=$_AR_REPOSITORY'
+      - '_SERVICE_NAME=$_SERVICE_NAME'
+      - 'COMMIT_SHA=$COMMIT_SHA'
+      - '_CLOUD_SQL_INSTANCE=$_CLOUD_SQL_INSTANCE'
+      - '_SERVICE_ACCOUNT=$_SERVICE_ACCOUNT'
+      - '_DEBUG=$_DEBUG'
+      - '_ALLOWED_HOSTS=$_ALLOWED_HOSTS'
+      - '_DJANGO_SETTINGS_MODULE=$_DJANGO_SETTINGS_MODULE'
+      - '_OTEL_SERVICE_NAME=$_OTEL_SERVICE_NAME'
+      - '_OTEL_LOG_LEVEL=$_OTEL_LOG_LEVEL'
+      - '_DD_API_KEY=$_DD_API_KEY'
     args:
       - -c
       - |
