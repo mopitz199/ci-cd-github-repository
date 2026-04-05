@@ -59,7 +59,7 @@ spec:
             failureThreshold: 12
 
         - name: otel-collector
-          image: otel/opentelemetry-collector-contrib:0.125.0
+          image: docker.io/otel/opentelemetry-collector-contrib:0.125.0
           args:
             - "--config=/etc/otel/collector.yaml"
           env:
