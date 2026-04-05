@@ -68,8 +68,8 @@ steps:
       - '_DJANGO_SETTINGS_MODULE=$_DJANGO_SETTINGS_MODULE'
       - '_OTEL_SERVICE_NAME=$_OTEL_SERVICE_NAME'
       - '_OTEL_LOG_LEVEL=$_OTEL_LOG_LEVEL'
-      - '_DD_API_KEY=$_DD_API_KEY'
       - '_OTEL_COLLECTOR_VERSION=$_OTEL_COLLECTOR_VERSION'
+      - '_DD_SITE=$_DD_SITE'
     args:
       - -c
       - |
