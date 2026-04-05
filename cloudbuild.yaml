@@ -12,6 +12,15 @@ steps:
     args:
       - push
       - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA'
+  - name: gcr.io/cloud-builders/docker
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        docker pull ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:$_OTEL_COLLECTOR_VERSION
+        docker tag ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:$_OTEL_COLLECTOR_VERSION \
+          $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/otel-collector:$_OTEL_COLLECTOR_VERSION
+        docker push $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/otel-collector:$_OTEL_COLLECTOR_VERSION
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: bash
     args:
@@ -56,6 +65,7 @@ steps:
       - '_OTEL_SERVICE_NAME=$_OTEL_SERVICE_NAME'
       - '_OTEL_LOG_LEVEL=$_OTEL_LOG_LEVEL'
       - '_DD_API_KEY=$_DD_API_KEY'
+      - '_OTEL_COLLECTOR_VERSION=$_OTEL_COLLECTOR_VERSION'
     args:
       - -c
       - |
