@@ -17,10 +17,14 @@ steps:
     args:
       - -c
       - |
-        docker pull ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:$_OTEL_COLLECTOR_VERSION
-        docker tag ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:$_OTEL_COLLECTOR_VERSION \
-          $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/otel-collector:$_OTEL_COLLECTOR_VERSION
-        docker push $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/otel-collector:$_OTEL_COLLECTOR_VERSION
+        if ! docker manifest inspect "$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/otel-collector:$_OTEL_COLLECTOR_VERSION" > /dev/null 2>&1; then
+          docker pull ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:$_OTEL_COLLECTOR_VERSION
+          docker tag ghcr.io/open-telemetry/opentelemetry-collector-releases/opentelemetry-collector-contrib:$_OTEL_COLLECTOR_VERSION \
+            $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/otel-collector:$_OTEL_COLLECTOR_VERSION
+          docker push $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/otel-collector:$_OTEL_COLLECTOR_VERSION
+        else
+          echo "otel-collector:$_OTEL_COLLECTOR_VERSION already exists in Artifact Registry, skipping."
+        fi
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     entrypoint: bash
     args:
