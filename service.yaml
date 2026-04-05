@@ -51,9 +51,6 @@ spec:
                   key: latest
 
           envFrom: []
-          volumeMounts:
-            - name: cloudsql
-              mountPath: /cloudsql
           startupProbe:
             tcpSocket:
               port: 8080
@@ -87,9 +84,6 @@ spec:
             items:
               - key: latest
                 path: collector.yaml
-        - name: cloudsql
-          emptyDir:
-            medium: Memory
 
   traffic:
     - percent: 100
