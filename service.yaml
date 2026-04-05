@@ -1,0 +1,96 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: $_SERVICE_NAME
+  annotations:
+    run.googleapis.com/invoker-iam-disabled: "true"
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/cloudsql-instances: '$_CLOUD_SQL_INSTANCE'
+        run.googleapis.com/execution-environment: gen2
+    spec:
+      serviceAccountName: $_SERVICE_ACCOUNT
+      timeoutSeconds: 300
+      containers:
+        - name: app
+          image: $_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DEBUG
+              value: "$_DEBUG"
+            - name: ALLOWED_HOSTS
+              value: "$_ALLOWED_HOSTS"
+            - name: DJANGO_SETTINGS_MODULE
+              value: "$_DJANGO_SETTINGS_MODULE"
+            - name: OTEL_SERVICE_NAME
+              value: "$_OTEL_SERVICE_NAME"
+            - name: OTEL_TRACES_EXPORTER
+              value: "otlp"
+            - name: OTEL_METRICS_EXPORTER
+              value: "otlp"
+            - name: OTEL_LOGS_EXPORTER
+              value: "otlp"
+            - name: OTEL_EXPORTER_OTLP_PROTOCOL
+              value: "http/protobuf"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://127.0.0.1:4318"
+            - name: OTEL_LOG_LEVEL
+              value: "$_OTEL_LOG_LEVEL"
+            - name: DJANGO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: DJANGO_SECRET_KEY
+                  key: latest
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: DATABASE_URL
+                  key: latest
+
+          envFrom: []
+          volumeMounts:
+            - name: cloudsql
+              mountPath: /cloudsql
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 12
+
+        - name: otel-collector
+          image: otel/opentelemetry-collector-contrib:0.125.0
+          args:
+            - "--config=/etc/otel/collector.yaml"
+          env:
+            - name: DD_SITE
+              value: "datadoghq.com"
+            - name: DD_API_KEY
+              value: "$_DD_API_KEY"
+          volumeMounts:
+            - name: otel-config
+              mountPath: /etc/otel
+          startupProbe:
+            tcpSocket:
+              port: 13133
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 12
+
+      volumes:
+        - name: otel-config
+          secret:
+            secretName: OTEL_COLLECTOR_CONFIG
+            items:
+              - key: latest
+                path: collector.yaml
+        - name: cloudsql
+          emptyDir:
+            medium: Memory
+
+  traffic:
+    - percent: 100
+      latestRevision: true

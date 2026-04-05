@@ -41,26 +41,12 @@ steps:
             --args manage.py,migrate,--noinput
         fi
   - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
     args:
-      - run
-      - deploy
-      - $_SERVICE_NAME
-      - '--image'
-      - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA'
-      - '--service-account'
-      - "$_SERVICE_ACCOUNT"
-      - '--allow-unauthenticated'
-      - '--region'
-      - $_DEPLOY_REGION
-      - '--platform'
-      - $_PLATFORM
-      - '--add-cloudsql-instances'
-      - '$_CLOUD_SQL_INSTANCE'
-      - '--update-env-vars'
-      - 'DEBUG=$_DEBUG,ALLOWED_HOSTS=$_ALLOWED_HOSTS,DJANGO_SETTINGS_MODULE=$_DJANGO_SETTINGS_MODULE,OTEL_SERVICE_NAME=$_OTEL_SERVICE_NAME,OTEL_EXPORTER_OTLP_ENDPOINT=$_OTEL_EXPORTER_OTLP_ENDPOINT,OTEL_EXPORTER_OTLP_HEADERS=$_OTEL_EXPORTER_OTLP_HEADERS,OTEL_TRACES_EXPORTER=$_OTEL_TRACES_EXPORTER,OTEL_METRICS_EXPORTER=$_OTEL_METRICS_EXPORTER,OTEL_LOGS_EXPORTER=$_OTEL_LOGS_EXPORTER,OTEL_EXPORTER_OTLP_PROTOCOL=$_OTEL_EXPORTER_OTLP_PROTOCOL,OTEL_LOG_LEVEL=$_OTEL_LOG_LEVEL'
-      - '--update-secrets'
-      - 'DJANGO_SECRET_KEY=DJANGO_SECRET_KEY:latest,DATABASE_URL=DATABASE_URL:latest'
-    entrypoint: gcloud
+      - -c
+      - |
+        envsubst < service.yaml > rendered-service.yaml
+        gcloud run services replace rendered-service.yaml --region "$_DEPLOY_REGION" --platform "$_PLATFORM"
 timeout: 1200s
 images:
   - '$_AR_HOSTNAME/$_AR_PROJECT_ID/$_AR_REPOSITORY/$_SERVICE_NAME:$COMMIT_SHA'
