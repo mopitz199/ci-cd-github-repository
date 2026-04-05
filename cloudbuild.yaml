@@ -71,7 +71,6 @@ steps:
       - |
         apt-get install -y gettext-base
         envsubst < service.yaml > rendered-service.yaml
-        cat rendered-service.yaml
         gcloud run services replace rendered-service.yaml --region "$_DEPLOY_REGION" --platform "$_PLATFORM"
 timeout: 1200s
 images:

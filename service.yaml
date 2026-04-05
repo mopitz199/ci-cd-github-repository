@@ -64,9 +64,12 @@ spec:
             - "--config=/etc/otel/collector.yaml"
           env:
             - name: DD_SITE
-              value: "datadoghq.com"
+              value: "$_DD_SITE"
             - name: DD_API_KEY
-              value: "$_DD_API_KEY"
+              valueFrom:
+                secretKeyRef:
+                  name: DD_API_KEY
+                  key: latest
           volumeMounts:
             - name: otel-config
               mountPath: /etc/otel
