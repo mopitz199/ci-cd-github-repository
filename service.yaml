@@ -32,7 +32,9 @@ spec:
             - name: OTEL_METRICS_EXPORTER
               value: "otlp"
             - name: OTEL_TRACES_SAMPLER
-              value: "always_on"
+              value: "parentbased_traceidratio"
+            - name: OTEL_TRACES_SAMPLER_ARG
+              value: "0.2"
             - name: OTEL_LOGS_EXPORTER
               value: "otlp"
             - name: OTEL_EXPORTER_OTLP_PROTOCOL
